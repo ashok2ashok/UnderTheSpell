@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="css/bulma.min.css">
+	<style type="text/css">
+		body, .box {
+			background-color: black;
+		}
+		span {
+			display: block;
+			overflow: hidden;
+			padding-right:10px;
+		}
+		input[type="text"] { 
+			width: 100%;
+			border: none;
+			font-size: 10em;
+		}
+		#response {
+			font-size: 4em;
+		}
+
+	</style>
+	<script src="webOSTVjs-1.1.0/webOSTV.js" charset="utf-8"></script>
+	<script src="webOSTVjs-1.1.0/webOSTV-dev.js" charset="utf-8"></script>
+	<script src="script/jquery-3.4.1.min.js"></script>
+	<!--Rename script/credentials-template.js to credentials.js with Google Custom Search API Key in a variable like below. This will be used when constructing the API URL-->
+	<!--var MY_SEARCH_API_KEY = "<YOUR_API_KEY_HERE>";-->
+	<script src="script/credentials.js"></script>
+</head>
+
+<body style="background-color: black;" bgcolor="#000000" tabindex="-1">
+	
+	<div class="box" tabindex="-1">
+		<div class="columns is-desktop is-centered" tabindex="-1">
+			<div class="column is-multiline" tabindex="-1">
+				<div class="box" tabindex="-1">
+					<div class="column is-full has-text-centered" tabindex="-1">
+						<span tabindex="-1"><input type="text" value="" placeholder="Reference" id="referenceTxt" tabindex="1"/></span>
+					</div>
+				</div>
+				<div class="box" tabindex="-1">
+					<div class="column is-full has-text-centered" tabindex="-1">
+						<span tabindex="-1"><input type="text" value="" placeholder="Practice" id="userTxt" tabindex="2"/></span>
+					</div>
+				</div>
+				
+				<div class="column is-full has-text-centered" tabindex="-1">
+					<section class="hero is-dark" tabindex="-1">
+						<div class="hero-body" tabindex="-1">
+						  <div class="container" tabindex="-1">
+							<h1 class="title" tabindex="-1">
+							  Under The Spell
+							</h1>
+							<h2 class="subtitle" tabindex="-1">
+							  Practice typing the text displayed and get rewarded with a picture
+							</h2>
+						  </div>
+						</div>
+					  </section>
+				</div>
+			</div>
+			<div class="column has-text-centered" tabindex="-1">
+				<p id="response" tabindex="-1"></p>
+				<img src="images/homebanner.jpg" id="googleImg" tabindex="-1"/>
+			</div>
+		</div>
+	</div>
+
+	<div id="output" tabindex="-1"></div>
+	<script type="text/javascript" >
+		//Configs
+		var KEY_THROTTLE_MILLISECS = 800;
+
+		response = $('#response');
+		referenceTxt = $('#referenceTxt');
+		userTxt = $('#userTxt');
+		googleImg = $('#googleImg');
+		
+		function validateReward(){
+			if((userTxt.val().length > 0 && referenceTxt.val().length > 0 ) && (userTxt.val().toUpperCase() != referenceTxt.val().toUpperCase()) ) {
+				response.html("Please check and type again");
+				googleImg.attr("src","images/sad.jpg");
+			}
+			else if(userTxt.val().length == 0 && referenceTxt.val().length >= 0){
+				response.html("Please check and type again");
+				googleImg.attr("src","images/homebanner.jpg");
+			}
+			else{
+				if(userTxt.val().length > 0 && referenceTxt.val().length == 0){
+					response.html("Reference text is empty");
+				}
+				else{
+					response.html("Bravo!");
+				}
+				googleImg.attr("src","images/monkey-loader.gif");
+				var url = "https://www.googleapis.com/customsearch/v1?key="+MY_SEARCH_API_KEY+"&cx=011977538483151634404:tqijdtgjf0j&searchType=image&q="+encodeURI(userTxt.val())+"&safe=high";
+
+				$.get( url, loadFirstImage).fail(function(err) {
+					response.html("Retrying with a different method...");
+					try{
+						loadNewImageSearchScript(url+"&callback=loadFirstImage");
+					}
+					catch(err2){
+						response.html(err2.message+"<br> Not able to load picture from the internet because LG software is old. Ancient.");
+					}
+				});
+				
+			}
+		}
+
+		var googleResponse = "";
+		var currentIndex = 0;
+
+		function loadFirstImage(response){
+			if(typeof response == "string") googleResponse = JSON.parse(response);
+			else googleResponse = response;
+			currentIndex = 0;
+			if(googleResponse.items.length > 0 && googleResponse.items[0].mime.indexOf("image")>=0){
+				googleImg.attr("src",googleResponse.items[0].link);
+			}
+			else{
+				googleImg.attr("src","images/happy.jpg");
+			}
+		}
+
+		function loadNextOrPreviousImage(index){
+			if(googleResponse!="" && googleResponse.items[index]!=null && googleResponse.items[index].mime.indexOf("image")>=0){
+				googleImg.attr("src",googleResponse.items[currentIndex=index].link);
+			}
+		}
+
+		function loadNewImageSearchScript(url){
+			var s = document.createElement("script");
+                s.type = "text/javascript";
+				s.src = url;
+				s.innerHTML=null;
+				s.id = "googleImgResults";
+                $("#output").html("");
+                $("#output").append(s);
+		}
+
+		function focusElement(jqObj){
+			orgVal = jqObj.val();
+			jqObj.focus().val("").val(orgVal);
+		}
+		var lastKeyTime = Date.now();
+		//8-backspace, 127-delete, 37-40 arrows, 1-ctrl+a, 59 - caps lock
+		var skipKeyCodes = [37, 38, 39, 40, 127,1,26,9, 59];
+		//This doesn't seem to be catching or reacting to alphabets on the keyboard. Workaround is to use input event.
+		$("input").bind("keydown",function(e){
+			var currentTime = Date.now();
+			if ((currentTime - lastKeyTime < KEY_THROTTLE_MILLISECS) && skipKeyCodes.indexOf(e.keyCode)<0 && userTxt.is(":focus")) {
+				e.preventDefault();
+				e.stopPropagation();
+				return;
+			}
+			else{
+				lastKeyTime = currentTime;
+			}
+
+			if(e.keyCode == 38 || e.keyCode == 40){
+				//Up or Down Button Pressed then select element userTxt
+				if(referenceTxt.is(":focus")) focusElement(userTxt);
+				else if(userTxt.is(":focus")) focusElement(referenceTxt);
+				else focusElement(referenceTxt);
+			}
+			//Left Button - load previous image
+			else if(e.keyCode == 37 && googleResponse!="" &&  userTxt.is(':focus')) loadNextOrPreviousImage(currentIndex-1);
+			//Right Button - load next image
+			else if(e.keyCode == 39 && googleResponse!="" && userTxt.is(':focus')) loadNextOrPreviousImage(currentIndex+1);
+			//Enter or OK button
+			else if(e.keyCode == 13) validateReward();
+		});
+
+		$(function() {
+			//The below is to prevent repeating characters after press and hold OR repeated button press'.  
+			var lastInputTime = Date.now();
+			$(document).on('input', ':text', function(e){ 
+				var keyCode = e.originalEvent.data;
+				var currentTime = Date.now();
+				if (currentTime - lastInputTime < KEY_THROTTLE_MILLISECS && skipKeyCodes.indexOf(keyCode)<0 && userTxt.is(":focus")) {
+					var inputTxt = $(e.target).val();
+					$(e.target).val(inputTxt.substring(0, inputTxt.length-1));
+					return;
+				}
+				else{
+					lastInputTime = currentTime;
+				}
+
+			 });
+			referenceTxt.focus();
+		});
+
+	</script>
+</body>
+
+</html>

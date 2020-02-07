@@ -1,0 +1,10 @@
+{
+    "vendor": "AMO",
+    "largeIcon": "largeIcon.png",
+    "icon": "icon.png",
+    "main": "index.html",
+    "id": "im.ashok.webos.spell",
+    "title": "Under The Spell",
+    "type": "web",
+    "version": "0.0.1"
+}

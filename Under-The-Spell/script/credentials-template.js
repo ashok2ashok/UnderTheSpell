@@ -1,0 +1,1 @@
+var MY_SEARCH_API_KEY = "<YOUR_API_KEY_HERE>";
