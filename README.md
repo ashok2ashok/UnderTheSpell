@@ -4,7 +4,7 @@ A simple spelling learning app for kids build using LG WebOS SDK for LG TVs.
 This app has two text input fields
  - Reference text input field to be used by teacher / adult
  - Practice input field to be used by learner / kid
-![Under the Spell]([https://github.com/ashok2ashok/UnderTheSpell/screenshots/Right.png](https://github.com/ashok2ashok/UnderTheSpell/screenshots/Right.png))
+![Under the Spell](screenshots/Right.jpg)
 ## Process
 Follow the below steps to get most value out of this app:
  1. Type the word/spelling you want to teach in the **Reference** text field
@@ -15,6 +15,18 @@ Follow the below steps to get most value out of this app:
 	 6. If the words match, then a picture from the **first google image search** result. for that word is displayed on the right.
 
 Note: Use a wireless keyboard connected to the TV / device for a better experience
+
+## Screenshots
+### Home Screen
+![Under the Spell](screenshots/Home.png)
+### Home Screen when using Wireless Keyboard
+![Under the Spell](screenshots/HomePhysicalKeyboard.png)
+### Text Mismatch
+![Under the Spell](screenshots/Wrong.png)
+### Loading Screen
+![Under the Spell](screenshots/Loading.png)
+### Icon in LG App List
+![Under the Spell](screenshots/HomeIcon.png)
 
 ## Technical Details
 
