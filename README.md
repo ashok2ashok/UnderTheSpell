@@ -15,11 +15,13 @@ This app has two text input fields
 
 ## Installation
 
- 1. Enable Developer Mode on your LG TV by following instructions here - [http://webostv.developer.lge.com/develop/app-test/](http://webostv.developer.lge.com/develop/app-test/)
+ 1. Download and update code from Github - [https://github.com/ashok2ashok/UnderTheSpell/archive/master.zip](https://github.com/ashok2ashok/UnderTheSpell/archive/master.zip)
+	 -  Follow instructions described in [Google Custom Search API Key](#google-custom-search-api-key) to update Google Custom Search API Key in `script\credentials.js`
+ 2. Enable Developer Mode on your LG TV by following instructions here - [http://webostv.developer.lge.com/develop/app-test/](http://webostv.developer.lge.com/develop/app-test/)
 	 2. After enabling, your screen should look like below: 
 	 ![enter image description here](http://webostv.developer.lge.com/download_file/view_inline/2099/)
- 2. Download the LG WebOS SDK here - [http://webostv.developer.lge.com/sdk/installation/](http://webostv.developer.lge.com/sdk/installation/). If you want to just install the app on the TV and don't need any development environment, then install the CLI or minimal version for your OS.
- 3. Install the CLI / Minimal version by following instructions in this page - [http://webostv.developer.lge.com/sdk/installation/](http://webostv.developer.lge.com/sdk/installation/)
+ 3. Download the LG WebOS SDK here - [http://webostv.developer.lge.com/sdk/installation/](http://webostv.developer.lge.com/sdk/installation/). If you want to just install the app on the TV and don't need any development environment, then install the CLI or minimal version for your OS.
+ 4. Install the CLI / Minimal version by following instructions in this page - [http://webostv.developer.lge.com/sdk/installation/](http://webostv.developer.lge.com/sdk/installation/)
 	 - Unzip the downloaded installer package.
 	 - Navigate to the unzipped directory and execute the installer executable file.
 	 - Perform the following:
@@ -31,7 +33,7 @@ This app has two text input fields
 			 - Windows: C:\webOS_TV_SDK
 		 - **Screen 3:** On completing the installation, read the information on the screen, and click  **DONE**.
 	 - Restart the system to ensure that the installation works properly.
- 4. Execute commands similar to below to install TV as emulator, package and install the app on TV. This is already documented in LG Documentation links above.
+ 5. Execute commands similar to below to install TV as emulator, package and install the app on TV. These commands are explained here - [http://webostv.developer.lge.com/sdk/tools/using-webos-tv-cli/testing-web-app-cli/](http://webostv.developer.lge.com/sdk/tools/using-webos-tv-cli/testing-web-app-cli/).
 
 ```
 ashok$ pwd
